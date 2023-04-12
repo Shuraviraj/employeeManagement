@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import EmployeeService from "../services/EmployeeService";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
-  const [employee, setemployee] = useState({
+  const [employee, setEmployee] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const value = e.target.value;
-    setemployee({ ...employee, [e.target.name]: value });
+    setEmployee({ ...employee, [e.target.name]: value });
   };
 
   const saveEmployee = (e) => {
@@ -18,10 +21,20 @@ const AddEmployee = () => {
     EmployeeService.saveEmployee(employee)
       .then((response) => {
         console.log(response);
+        navigate("/employeeList");
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const reset = (e) => {
+    e.preventDefault();
+    setEmployee({
+      firstName: "",
+      lastName: "",
+      email: "",
+    });
   };
 
   return (
@@ -72,11 +85,14 @@ const AddEmployee = () => {
         <div className="items-center justify-center h-14 w-full my-4 space-x-4">
           <button
             onClick={saveEmployee}
-            className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-6 my-2"
+            className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-6 my-2 transition-colors duration-500 ease-in-out"
           >
             Save
           </button>
-          <button className="rounded text-white font-semibold bg-red-400 hover:bg-red-700 py-2 px-6 my-2">
+          <button
+            onClick={reset}
+            className="rounded text-white font-semibold bg-red-400 hover:bg-red-700 py-2 px-6 my-2 transition-colors duration-500 ease-in-out"
+          >
             Clear
           </button>
         </div>
