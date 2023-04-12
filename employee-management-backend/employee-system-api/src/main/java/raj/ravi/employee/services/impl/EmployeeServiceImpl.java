@@ -8,6 +8,8 @@ import raj.ravi.employee.model.Employee;
 import raj.ravi.employee.repository.EmployeeRepository;
 import raj.ravi.employee.services.EmployeeService;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -22,5 +24,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employeeEntity = employeeMapper.mapToEntity(employee);
         var savedEmployee = employeeRepository.save(employeeEntity);
         return employeeMapper.mapToEmployee(savedEmployee);
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        var employees = employeeRepository.findAll();
+        return employees.stream()
+                .map(employeeMapper::mapToEmployee)
+                .toList();
     }
 }
